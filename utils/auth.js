@@ -1,47 +1,38 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import { clientCredentials } from './client';
+import 'firebase/analytics';
 
-const checkUser = (uid) => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/checkuser`, {
-    method: 'POST',
-    body: JSON.stringify({
-      uid,
-    }),
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-  })
-    .then((resp) => resolve(resp.json()))
-    .catch(reject);
-});
+const firebaseConfig = {
+  apiKey: 'AIzaSyAj55V9GEJCwaTnw0fok5oOWsCbnCZ1ZLc',
+  authDomain: 'emrsystem-66346.firebaseapp.com',
+  projectId: 'emrsystem-66346',
+  storageBucket: 'emrsystem-66346.firebasestorage.app',
+  messagingSenderId: '708375905557',
+  appId: '1:708375905557:web:5958307329c1f59e58151c',
+  measurementId: 'G-K379K17GJ7',
+};
 
-const registerUser = (userInfo) => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/register`, {
-    method: 'POST',
-    body: JSON.stringify(userInfo),
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-  })
-    .then((resp) => resolve(resp.json()))
-    .catch(reject);
-});
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+const auth = firebase.auth();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 const signIn = () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider);
+  auth.signInWithPopup(googleProvider);
 };
 
 const signOut = () => {
-  firebase.auth().signOut();
+  auth.signOut();
 };
 
+// ✅ Listen for auth changes
+const onAuthStateChange = (callback) => auth.onAuthStateChanged(callback);
+
 export {
-  signIn, //
+  auth,
+  signIn,
   signOut,
-  checkUser,
-  registerUser,
+  onAuthStateChange,
 };
