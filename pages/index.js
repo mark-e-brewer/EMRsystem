@@ -34,7 +34,7 @@ function Home() {
         <p>Loading fetched user...</p>
       )}
 
-      <Button variant="danger" size="lg" onClick={signOut}>
+      <Button variant="danger" size="lg" onClick={signOut}>S
         Sign Out
       </Button>
     </div>
